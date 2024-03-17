@@ -1,7 +1,7 @@
 import random
 
 # Lista de palabras posibles
-words = ["python", "programación", "computadora", "código", "desarrollo",
+words = ["python", "programacion", "computadora", "codigo", "desarrollo",
 "inteligencia"]
 
 # Elegir una palabra al azar
@@ -12,9 +12,25 @@ max_attempts = 5
 guessed_letters = []
 
 print("¡Bienvenido al juego de adiviananzas!")
+difficulty = input("Elige el nivel de dificultad: facil (F), medio (M) o dificil (D): ")
 print("Estoy pensando en una palabra. ¿Puedes adivinar cuál es?")
 
-word_displayed = "_" * len(secret_word)
+if difficulty.lower() == "d":
+    word_displayed = "_" * len(secret_word)
+elif difficulty.lower() == "m":
+    word_displayed = secret_word[0] + "_" * (len(secret_word)-2) + secret_word[-1]
+else:
+    vocales = ["a", "e", "i", "o", "u"]
+    letters = []
+    for letter in secret_word:
+        if letter in vocales:
+          letters.append(letter)
+        else:
+            letters.append("_")
+
+    word_displayed = "".join(letters)
+    print(word_displayed)
+
 # Mostrarla palabra parcialmente adivinada
 print(f"Palabra: {word_displayed}")
 
@@ -42,14 +58,13 @@ while fails < max_attempts:
         fails += 1
 
     # Mostrar la palabra parcialmente adivinadaz
-    letters = []
-    for letter in secret_word:
-        if letter in guessed_letters:
-          letters.append(letter)
-        else:
-            letters.append("_")
+    word_displayed_list = list(word_displayed)
 
-    word_displayed = "".join(letters)
+    for pos in range(len(secret_word)):
+        if secret_word[pos] in guessed_letters:
+            word_displayed_list[pos] = secret_word[pos]
+
+    word_displayed = "".join(word_displayed_list)
     print(f"Palabra: {word_displayed}")
     #print("Errores cometidos: ", fails)
     # Verificar si se ha adivinado la palabra completa
